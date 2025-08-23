@@ -1,27 +1,34 @@
-package com.fixitnow.services;
+package com.fixitnow;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
+import com.fixitnow.model.Task;
+import com.fixitnow.service.TaskService;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TaskServiceTest {
 
-    private TaskService taskService;
+    private final TaskService taskService = new TaskService();
 
-    @BeforeEach
-    void setup() {
-        taskService = new TaskService();
+    @Test
+    void shouldNotAllowEmptyTitle() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            taskService.addTask("", "Some description");
+        });
     }
 
     @Test
-    void testAddTask() {
-        taskService.addTask("Buy Milk", "Buy 2 liters of milk");
-        List<TaskService.Task> tasks = taskService.getTasks();
+    void shouldNotAllowEmptyDescription() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            taskService.addTask("Some title", "");
+        });
+    }
 
-        assertEquals(1, tasks.size());
-        assertEquals("Buy Milk", tasks.get(0).getTitle());
-        assertEquals("Buy 2 liters of milk", tasks.get(0).getDescription());
+    @Test
+    void shouldCreateTaskSuccessfully() {
+        Task task = taskService.addTask("Valid title", "Valid description");
+
+        assertNotNull(task);
+        assertEquals("Valid title", task.getTitle());
+        assertEquals("Valid description", task.getDescription());
     }
 }

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Task</title>
+</head>
+<body>
+<h1>Add Task</h1>
+
+<!-- Display success message -->
+<div th:if="${successMessage}" id="successMessage" style="color:green" th:text="${successMessage}"></div>
+
+<!-- Task form -->
+<form th:action="@{/tasks/ui/add}" method="post">
+  <label>Title:</label>
+  <input type="text" id="taskTitle" name="title" required><br><br>
+
+  <label>Description:</label>
+  <textarea id="taskDescription" name="description" required></textarea><br><br>
+
+  <button type="submit" id="submitTaskBtn">Add Task</button>
+</form>
+
+<!-- Optional: Back to Task List -->
+<a th:href="@{/tasks}">Go to Task List</a>
+</body>
+</html>

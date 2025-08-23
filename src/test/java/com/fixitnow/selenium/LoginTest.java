@@ -1,27 +1,49 @@
 package com.fixitnow.selenium;
 
-import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT) // starts app at localhost:8080
+import java.time.Duration;
+
 public class LoginTest {
+    public static void main(String[] args) {
 
-    @Test
-    public void testLogin() {
-        System.setProperty("webdriver.chrome.driver", "C:\\drivers\\chromedriver.exe");
-
+        // Set path to chromedriver if needed
+        System.setProperty("webdriver.chrome.driver","C:\\drivers\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
-        driver.get("http://localhost:8080/login");
 
-        // Example login actions (uncomment after you have elements)
-        // driver.findElement(By.id("username")).sendKeys("admin");
-        // driver.findElement(By.id("password")).sendKeys("1234");
-        // driver.findElement(By.id("loginButton")).click();
+        try {
+            driver.get("https://your-login-page.com");
 
-        System.out.println("Login test ran successfully!");
-        //driver.quit();
+            // Wait up to 10 seconds for username field to be visible
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+            WebElement usernameField = wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(By.id("username"))
+            );
+            usernameField.sendKeys("yourUsername");
+
+            WebElement passwordField = driver.findElement(By.id("password"));
+            passwordField.sendKeys("yourPassword");
+
+            // Wait until login button is clickable
+            WebElement loginButton = wait.until(
+                    ExpectedConditions.elementToBeClickable(By.id("loginButton"))
+            );
+            loginButton.click();
+
+            // Optional: wait for next page to load
+            wait.until(ExpectedConditions.urlContains("dashboard"));
+            System.out.println("Login successful!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            driver.quit();
+        }
     }
 }

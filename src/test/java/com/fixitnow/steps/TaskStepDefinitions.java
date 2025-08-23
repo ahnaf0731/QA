@@ -13,7 +13,7 @@ public class TaskStepDefinitions {
     @Given("a new task is created")
     public void a_new_task_is_created() {
         // Use null for id if it will be generated automatically
-        task = new Task(null, "Test Task", "This is a test task description");
+        task = new Task("Fix AC", "Repair AC");  // remove null id
     }
 
     @When("the task title is updated to {string}")
